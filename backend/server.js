@@ -59,6 +59,22 @@ app.post("/todos", (req, res) => {
     return res.json("Todos are saved!!")
 })
 
+// PUT req /todos/:id
+app.put("/todos/:id", (req, res) => {
+    const {id} = req.params
+    const {title, done} = req.body
+    const todos = load_todos()
+    const newTodos = todos.map(todo => {
+        if(todo.id == id) {
+            return {...todo, title, done}
+        }
+        return todo
+    })
+
+    fs.writeFileSync(PATH, JSON.stringify(newTodos))
+    return res.json(newTodos)
+})
+
 
 // Start listening to the PORT 8888
 app.listen(8888, () => {
